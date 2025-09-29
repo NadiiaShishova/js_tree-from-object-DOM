@@ -1,11 +1,45 @@
 'use strict';
 
+/**
+ *
+ * @param {HTMLElement} element
+ * @param {Object} data
+ */
+export function createTree(element, data) {
+  if (!data || typeof data !== 'object') {
+    return;
+  }
+
+  const keys = Object.keys(data);
+
+  if (keys.length === 0) {
+    return;
+  }
+
+  const ul = document.createElement('ul');
+
+  for (const key of keys) {
+    const li = document.createElement('li');
+
+    li.textContent = key;
+
+    const child = data[key];
+
+    if (child && typeof child === 'object' && Object.keys(child).length > 0) {
+      createTree(li, child);
+    }
+
+    ul.appendChild(li);
+  }
+
+  element.appendChild(ul);
+}
+
 const food = {
   Drink: {
     Wine: {},
     Schnaps: {},
   },
-
   Fruit: {
     Red: {
       Cherry: {},
@@ -20,30 +54,6 @@ const food = {
 
 const treeContainer = document.querySelector('#tree');
 
-function createTreeRecursive(container, obj) {
-  if (!obj || typeof obj !== 'object') {
-    return;
-  }
-
-  const ul = document.createElement('ul');
-
-  for (const key in obj) {
-    if (!obj.hasOwnProperty(key)) {
-      continue;
-    }
-
-    const li = document.createElement('li');
-
-    li.textContent = key;
-
-    if (typeof obj[key] === 'object' && Object.keys(obj[key]).length > 0) {
-      createTreeRecursive(li, obj[key]);
-    }
-
-    ul.appendChild(li);
-  }
-
-  container.appendChild(ul);
+if (treeContainer) {
+  createTree(treeContainer, food);
 }
-
-createTreeRecursive(treeContainer, food);
