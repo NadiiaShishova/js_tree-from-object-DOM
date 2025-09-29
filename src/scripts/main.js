@@ -1,11 +1,10 @@
 'use strict';
 
-/**
- *
- * @param {HTMLElement} element
- * @param {Object} data
- */
 export function createTree(element, data) {
+  if (!(element instanceof Element)) {
+    return;
+  }
+
   if (!data || typeof data !== 'object') {
     return;
   }
@@ -36,24 +35,15 @@ export function createTree(element, data) {
 }
 
 const food = {
-  Drink: {
-    Wine: {},
-    Schnaps: {},
-  },
+  Drink: { Wine: {}, Schnaps: {} },
   Fruit: {
-    Red: {
-      Cherry: {},
-      Strawberry: {},
-    },
-    Yellow: {
-      Banana: {},
-      Pineapple: {},
-    },
+    Red: { Cherry: {}, Strawberry: {} },
+    Yellow: { Banana: {}, Pineapple: {} },
   },
 };
 
-const treeContainer = document.querySelector('#tree');
+document.addEventListener('DOMContentLoaded', () => {
+  const treeContainer = document.querySelector('#tree');
 
-if (treeContainer) {
   createTree(treeContainer, food);
-}
+});
